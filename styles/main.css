@@ -1,0 +1,78 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.leaflet-control-zoom,
+.leaflet-control-attribution a,
+.leaflet-control-attribution span {
+  display: none;
+}
+
+.overlay-form {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form input[type="text"],
+.form input[type="email"] {
+  width: 100%;
+  padding: 8px 12px;
+}
+.small-map_wrapper {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  visibility: hidden;
+}
+
+#small-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+.small-map_wrapper #close {
+  cursor: pointer;
+  position: absolute;
+  left: 5px;
+  z-index: 2;
+  top: 5px;
+}
+.active {
+  visibility: visible;
+}
+
+.active #small-map {
+  cursor: pointer;
+}
