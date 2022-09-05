@@ -118,14 +118,13 @@ const addPointsOnServer = async (coords) => {
 
   markers.addLayer(layer); //Добавляем слой маркеров
   markers.addTo(map);
-  function smallMap(position = [40.93469, 72.98827], message) {
+  function smallMap(position = [40.93469, 72.98827]) {
     const smallMap = L.map("small-map").setView(position, 13);
     L.tileLayer(mapBoxURL, {
       maxZoom: 19,
       attribution:
         '<a href="https://apps.mapbox.com/feedback/">Mapbox</a> <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(smallMap);
-    // L.marker(position).addTo(smallMap).bindTooltip(message);
     return smallMap;
   }
 
@@ -135,9 +134,9 @@ const addPointsOnServer = async (coords) => {
 
   openMapBtn.addEventListener("click", function (e) {
     this.disabled = true;
-    smallMapEl.classList.add("active");
+    smallMapEl.classList.add("activeSmallMap");
     document.getElementById("close").addEventListener("click", () => {
-      smallMapEl.classList.remove("active");
+      smallMapEl.classList.remove("activeSmallMap");
       this.disabled = false;
     });
   });
@@ -145,7 +144,7 @@ const addPointsOnServer = async (coords) => {
   let a;
   let b;
   small.addEventListener("click", (e) => {
-    smallMapEl.classList.remove("active");
+    smallMapEl.classList.remove("activeSmallMap");
     openMapBtn.disabled = false;
     a = e.latlng.lat;
     b = e.latlng.lng;
@@ -162,10 +161,10 @@ const addPointsOnServer = async (coords) => {
     const currentPosition = [latitude, longitude];
     console.log(currentPosition);
     // вызываем функцию, передавая ей текущую позицию и сообщение
+    smallMap(currentPosition);
     const marker = new L.marker(currentPosition);
     marker.addTo(small);
     // L.marker(small).addTo(currentPosition).bindTooltip("sad");
-    // smallMap(currentPosition, "xnjn");
   }
 
   function error({ message }) {

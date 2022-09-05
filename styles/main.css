@@ -161,7 +161,7 @@ body {
   z-index: 2;
   top: 5px;
 }
-.active {
+.activeSmallMap {
   visibility: visible;
 }
 
