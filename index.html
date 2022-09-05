@@ -11,16 +11,33 @@
       rel="stylesheet"
       href="./js/leafletMarkerCluster/MarkerCluster.Default.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.css"
+    />
     <link rel="stylesheet" href="./styles/main.css" />
   </head>
   <body>
     <div class="wrapper">
-      <div id="map"></div>
+      <div id="map" class="map"></div>
+      <aside class="object js-object">
+        <button class="object__close js-object-close"></button>
+        <div class="object__title js-object-title"></div>
+        <div class="object__descr js-object-descr"></div>
+
+        <div class="object__img">
+          <img class="img-absolute js-object-img" />
+        </div>
+        <div class="object__descr js-object-user-name"></div>
+        <div class="object__descr js-object-user-email"></div>
+        <div class="object__descr js-object-user-phone"></div>
+      </aside>
       <div class="overlay-form">
         <form class="form" id="form">
-          <input type="text" required placeholder="Имя Фамилия" />
-          <input type="text" required placeholder="Телефон" />
-          <input type="email" required placeholder="email" />
+          <input type="text" id="userName" required placeholder="Имя Фамилия" />
+          <input type="text" id="userPhone" required placeholder="Телефон" />
+          <input type="email" id="userEmail" required placeholder="email" />
+          <textarea id="desc"></textarea>
           <label for="file">
             <input type="file" id="file" />
           </label>
@@ -30,6 +47,7 @@
         <div class="small-map_wrapper">
           <div id="small-map"></div>
           <button type="button" id="close">close</button>
+          <button type="button" id="myPos">Где я?</button>
         </div>
       </div>
     </div>
@@ -38,6 +56,10 @@
     </div>
 
     <script src="./js//leaflet/leaflet.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.76.1/dist/L.Control.Locate.min.js"
+      charset="utf-8"
+    ></script>
     <script src="./js//leafletMarkerCluster//leaflet.markercluster.js"></script>
     <script src="./js/app.js"></script>
   </body>
