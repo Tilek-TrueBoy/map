@@ -26,6 +26,10 @@ body {
   -o-object-fit: cover;
      object-fit: cover;
 }
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
 .map {
   position: absolute;
   top: 0;
@@ -54,13 +58,21 @@ body {
   display: none;
 }
 .map__cluster_number {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  left: 0;
-  font-size: 130%;
-  top: 9px;
-  font-weight: 600;
+    position: absolute;
+    top: 51%;
+    left: 68%;
+    width: 25px;
+    height: 25px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #de3333;
+    box-sizing: 0px 0px 0px rgba(218, 51,51, .1);
+    color: #FFF;
+    border-radius: 100%;
+    text-align: center;
+    z-index: 300;
 }
 .object {
   position: fixed;
@@ -167,4 +179,33 @@ body {
 
 .active #small-map {
   cursor: pointer;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+    background-color: red;
+    border-radius: 100%;
+    filter: drop-shadow(0px 0px 10px red);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: .8;
+}
+
+.green {
+  width: 25px;
+    height: 25px;
+    background-color: green;
+    border-radius: 100%;
+    filter: drop-shadow(0px 0px 10px green);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.svgIcon {
+  color: green;
 }

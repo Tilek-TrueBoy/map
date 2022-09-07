@@ -40,17 +40,6 @@ const addPointsOnServer = async (coords) => {
   });
   let small = smallMap();
   L.control.locate().addTo(small);
-  // [40.93469, 72.98827]
-  const customIcon = L.icon({
-    iconUrl: "img/icon-placemark-single.svg", //Ссылка на изображение маркера
-    iconSize: [41, 56], //Рзамер маркера
-    tooltipAnchor: [15, 25], //Положение подписи маркера
-  });
-
-  //Задаем опции маркера
-  const markerOptions = {
-    icon: customIcon, //Пресет настроек, созданный выше
-  };
 
   const tooltipOptions = {
     permanent: true, //Постоянный показ подписи маркера
@@ -77,12 +66,14 @@ const addPointsOnServer = async (coords) => {
     document.querySelector(".js-object-user-phone").textContent = props.phone; //Указываем телефон пользователья
   }
 
+  const divIcon = (cluster = "", isChecked = false) =>
+    L.divIcon({
+      html: `<div class="${isChecked ? "green" : "icon"}">${cluster}</div>`,
+    });
+
   const layerCreate = (points) => {
     const layer = L.geoJSON(points, {
       onEachFeature: function onEachFeature(feature, layer) {
-        // if (feature.properties && feature.properties.title) {
-        //   layer.bindTooltip(feature.properties.title, tooltipOptions); //Добавляем подписи маркеров
-        // }
         layer.on({
           //По клику обновляем данные в сайдбаре и открываем его
           click: function (e, feature) {
@@ -93,31 +84,35 @@ const addPointsOnServer = async (coords) => {
         });
       },
       pointToLayer: function (feature, latlng) {
-        return L.marker(feature.geometry.coordinates, markerOptions); //Задаем положение маркера
+        console.log(feature);
+        if (feature.isChecked) {
+          console.log(true);
+        }
+        return L.marker(feature.geometry.coordinates, {
+          icon: divIcon("", feature.isChecked),
+        }); //Задаем положение маркера
       },
+      markersInheritOptions: true,
     });
 
     return layer;
   };
+
   const layer = layerCreate(points);
 
   const markers = L.markerClusterGroup({
-    showCoverageOnHover: false, //Отключаем показ границы маркеров при наведении на кластер
+    showCoverageOnHover: true, //Отключаем показ границы маркеров при наведении на кластер
     iconCreateFunction: function (cluster) {
-      //Создаем значок кластера
-      return L.divIcon({
-        html:
-          '<svg width="41" height="56" viewBox="0 0 41 56" fill="none" xmlns="http://www.w3.org/2000/svg" class="map__cluster_icon"><path d="M40.5106 20.2222C40.5106 37.7222 20.2553 56 20.2553 56C20.2553 56 0 37.3333 0 20.2222C0 9.0538 9.06862 0 20.2553 0C31.442 0 40.5106 9.0538 40.5106 20.2222Z" fill="#FF9D42"/><circle cx="20.5" cy="20.5" r="13.5" fill="white"/></svg><span class="map__cluster_number">' +
-          cluster.getChildCount() +
-          "</span>",
-        className: "map__cluster", //Задаем класс кластера
-        iconSize: L.point(30, 41), //Размер иконки кластера
-      });
+      for (let i = 0; i < points.length; i++) {
+        //Создаем значок кластера
+        return divIcon(cluster.getChildCount(), points[i].isChecked);
+      }
     },
   });
 
   markers.addLayer(layer); //Добавляем слой маркеров
   markers.addTo(map);
+
   function smallMap(position = [40.93469, 72.98827]) {
     const smallMap = L.map("small-map").setView(position, 13);
     L.tileLayer(mapBoxURL, {
@@ -131,6 +126,7 @@ const addPointsOnServer = async (coords) => {
   const smallMapEl = document.querySelector(".small-map_wrapper");
   const myPositionBtn = document.getElementById("myPos");
   const openMapBtn = document.querySelector(".pointBtn");
+  const myPosControl = document.querySelector(".leaflet-control-locate");
 
   openMapBtn.addEventListener("click", function (e) {
     this.disabled = true;
@@ -174,8 +170,9 @@ const addPointsOnServer = async (coords) => {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     const newCoords = {
-      id: `${Date.now()}`,
+      _id: Date.now(),
       type: "Feature",
+      isChecked: false,
       properties: {
         userName: inputName.value,
         phone: inputPhone.value,
