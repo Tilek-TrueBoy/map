@@ -12,7 +12,7 @@ body {
 }
 .wrapper {
   position: relative;
-  width: 100%;
+  min-width: 250px;
   height: 600px;
   overflow: hidden;
 }
@@ -77,8 +77,9 @@ body {
 .object {
   position: fixed;
   min-width: 250px;
+  left: 0;
   top: 0;
-  left: -30%;
+  transform: translateX(-100%);
   bottom: 0;
   background-color: #fff;
   z-index: 1000;
@@ -89,7 +90,7 @@ body {
   overflow-y: auto;
 }
 .object.is-open {
-  left: 0;
+  transform: translateX(0);
 }
 .object__close {
   position: absolute;
@@ -134,14 +135,21 @@ body {
 }
 
 .overlay-form {
-  z-index: 2;
+  display: flex;
+  flex-direction: column;
   position: absolute;
+  transform: translateX(100%);
   top: 0;
   right: 0;
   min-width: 250px;
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
-  padding: 10px;
+  padding: 30px 10px 30px;
+  z-index: 2;
+}
+
+.overlay-form_open {
+  transform: translateX(0);
 }
 
 .form {
@@ -157,7 +165,7 @@ body {
 .small-map_wrapper {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: 100%;
   visibility: hidden;
 }
 
@@ -169,7 +177,7 @@ body {
 .small-map_wrapper #close {
   cursor: pointer;
   position: absolute;
-  left: 5px;
+  right: 5px;
   z-index: 2;
   top: 5px;
 }
@@ -195,7 +203,7 @@ body {
 }
 
 .green {
-  width: 25px;
+    width: 25px;
     height: 25px;
     background-color: green;
     border-radius: 100%;
@@ -204,6 +212,32 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.open_form {
+  font-size: 14px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1000;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 0px 3px #000;
+}
+
+.close_form {
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  width: 100px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  box-shadow: 0px 0px 2px rgba(0,0,0, .2);
+  background: transparent;
 }
 
 .svgIcon {

@@ -32,6 +32,9 @@ const addPointsOnServer = async (coords) => {
   const textArea = document.querySelector("#desc");
   const aside = document.querySelector(".object");
   const closeAside = document.querySelector(".object__close");
+  const overlayForm = document.querySelector(".overlay-form");
+  const openFormBtn = document.querySelector(".open_form");
+  const closeFormBtn = document.querySelector(".close_form");
 
   // [56.631600, 47.886178]
   const map = L.map("map", {
@@ -170,23 +173,14 @@ const addPointsOnServer = async (coords) => {
     markers.addTo(map);
   });
 
-  async function sync(data) {
-    console.log(data);
-    const formData = new FormData();
-    formData.append("points", data);
+  openFormBtn.addEventListener("click", (e) => {
+    overlayForm.classList.add("overlay-form_open");
+    e.target.style.display = "none";
+  });
 
-    const res = await fetch("http://localhost:9000/points", {
-      method: "POST",
-      body: formData,
-    });
-
-    const log = await res.json();
-    console.log(log);
-  }
-
-  document.querySelector(".tilek").addEventListener("click", () => {
-    const file = inputFile.files[0];
-    sync(file);
+  closeFormBtn.addEventListener("click", (e) => {
+    overlayForm.classList.remove("overlay-form_open");
+    openFormBtn.style.display = "block";
   });
 
   closeAside.addEventListener("click", (e) => {
