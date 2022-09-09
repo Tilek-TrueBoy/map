@@ -41,13 +41,6 @@ const addPointsOnServer = async (coords) => {
   let small = smallMap();
   L.control.locate().addTo(small);
 
-  const tooltipOptions = {
-    permanent: true, //Постоянный показ подписи маркера
-    className: "map__tooltip", //Класс
-    opacity: 1, //Прозрачность
-    direction: "right", //Положение
-  };
-
   L.tileLayer(mapBoxURL, {
     maxZoom: 19,
     attribution:
@@ -74,27 +67,18 @@ const addPointsOnServer = async (coords) => {
   const layerCreate = (points) => {
     const layer = L.geoJSON(points, {
       onEachFeature: function onEachFeature(feature, layer) {
-        layer.on({
-          //По клику обновляем данные в сайдбаре и открываем его
-          click: function (e, feature) {
-            const layer = e.target;
-            update(layer.feature.properties);
-            aside.classList.add("is-open");
-          },
+        layer.addEventListener("click", (e) => {
+          const layer = e.target;
+          update(layer.feature.properties);
+          aside.classList.add("is-open");
         });
       },
       pointToLayer: function (feature, latlng) {
-        console.log(feature);
-        if (feature.isChecked) {
-          console.log(true);
-        }
         return L.marker(feature.geometry.coordinates, {
           icon: divIcon("", feature.isChecked),
         }); //Задаем положение маркера
       },
-      markersInheritOptions: true,
     });
-
     return layer;
   };
 
@@ -146,12 +130,6 @@ const addPointsOnServer = async (coords) => {
     b = e.latlng.lng;
   });
 
-  myPositionBtn.addEventListener("click", (e) => {
-    navigator.geolocation.getCurrentPosition(success, error, {
-      enableHighAccuracy: true,
-    });
-  });
-
   function success({ coords }) {
     const { latitude, longitude } = coords;
     const currentPosition = [latitude, longitude];
@@ -160,7 +138,6 @@ const addPointsOnServer = async (coords) => {
     smallMap(currentPosition);
     const marker = new L.marker(currentPosition);
     marker.addTo(small);
-    // L.marker(small).addTo(currentPosition).bindTooltip("sad");
   }
 
   function error({ message }) {
@@ -169,6 +146,7 @@ const addPointsOnServer = async (coords) => {
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
+
     const newCoords = {
       _id: Date.now(),
       type: "Feature",
@@ -178,17 +156,37 @@ const addPointsOnServer = async (coords) => {
         phone: inputPhone.value,
         email: inputEmail.value,
         desc: textArea.value,
-        file: inputFile.files[0],
+        image: "",
       },
       geometry: {
         type: "Point",
         coordinates: [a, b],
       },
     };
+
     addPointsOnServer(newCoords);
     const layer = layerCreate(newCoords);
     markers.addLayer(layer);
     markers.addTo(map);
+  });
+
+  async function sync(data) {
+    console.log(data);
+    const formData = new FormData();
+    formData.append("points", data);
+
+    const res = await fetch("http://localhost:9000/points", {
+      method: "POST",
+      body: formData,
+    });
+
+    const log = await res.json();
+    console.log(log);
+  }
+
+  document.querySelector(".tilek").addEventListener("click", () => {
+    const file = inputFile.files[0];
+    sync(file);
   });
 
   closeAside.addEventListener("click", (e) => {

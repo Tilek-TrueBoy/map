@@ -39,7 +39,7 @@
           <input type="email" id="userEmail" required placeholder="email" />
           <textarea id="desc"></textarea>
           <label for="file">
-            <input type="file" id="file" />
+            <input type="file" id="file" accept="image/*,.png,.jpg" />
           </label>
           <button type="button" class="pointBtn">Точка на карте</button>
           <button type="submit">Отпрвить форму</button>
@@ -47,12 +47,11 @@
         <div class="small-map_wrapper">
           <div id="small-map"></div>
           <button type="button" id="close">close</button>
-          <button type="button" id="myPos">Где я?</button>
         </div>
       </div>
     </div>
     <div class="btns">
-      <button>Отправить</button>
+      <button class="tilek">Отправить</button>
     </div>
 
     <script src="./js//leaflet/leaflet.js"></script>
